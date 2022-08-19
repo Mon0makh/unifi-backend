@@ -13,14 +13,18 @@ class LoginFormSettings(BaseModel):
     count_fields: int
 
 
+class BrandIcon(BaseModel):
+    brands_img: str
+    brands_api_name: str
+
+
 class LoginFormField(BaseModel):
     number: int
     field_type: str
     api_name: Union[str, None]
     field_title: List[str]
     description: Union[List[str], None]
-    brands_img: Union[List[str], None]
-    brands_api_name: Union[List[str], None]
+    brands: Union[BrandIcon, None]
 
 
 class LoginFormFields(BaseModel):
