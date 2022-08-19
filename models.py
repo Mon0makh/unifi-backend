@@ -13,7 +13,7 @@ class LoginFormSettings(BaseModel):
     count_fields: int
 
 
-class LoginFormFields(BaseModel):
+class LoginFormField(BaseModel):
     number: int
     field_type: str
     api_name: Union[str, None]
@@ -23,7 +23,11 @@ class LoginFormFields(BaseModel):
     brands_api_name: Union[List[str], None]
 
 
+class LoginFormFields(BaseModel):
+    fields: List[LoginFormField]
+
+
 class LoginForm(BaseModel):
     login: str  # session_key
     settings: LoginFormSettings
-    fields: List[LoginFormFields]
+    fields: List[LoginFormField]
