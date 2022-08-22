@@ -17,13 +17,16 @@ class BrandIcon(BaseModel):
     brands_img: str
     brands_api_name: str
 
+class text_langs:
+    lang: str
+    text: str
 
 class LoginFormField(BaseModel):
     number: int
     field_type: str
     api_name: Union[str, None]
-    field_title: List[str]
-    description: Union[List[str], None]
+    field_title: List[text_langs]
+    description: Union[List[text_langs], None]
     brands: Union[BrandIcon, None]
 
 
