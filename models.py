@@ -11,13 +11,13 @@ class LoginFormSettings(BaseModel):
     bg_img: Union[str, None]
     bg_color: Union[Color, None]
     count_fields: int
-
+    api_url: str
 
 class BrandIcon(BaseModel):
     brands_img: str
     brands_api_name: str
 
-class text_langs:
+class TextLangs(BaseModel):
     lang: str
     text: str
 
@@ -25,8 +25,8 @@ class LoginFormField(BaseModel):
     number: int
     field_type: str
     api_name: Union[str, None]
-    field_title: List[text_langs]
-    description: Union[List[text_langs], None]
+    field_title: List[TextLangs]
+    description: Union[List[TextLangs], None]
     brands: Union[BrandIcon, None]
 
 

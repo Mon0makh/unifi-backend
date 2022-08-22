@@ -16,7 +16,7 @@ async def http_exception_handler(request, exc):
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request, exc):
     return PlainTextResponse(str(exc), status_code=400)
- 
+
 
 @app.get("/")
 def read_root():
