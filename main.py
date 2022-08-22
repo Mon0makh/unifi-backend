@@ -25,17 +25,17 @@ def read_root():
 
 @app.post("/LoginForm/")
 async def create_item(item: LoginForm):
-    if len(item.config.langs) != item.config.count_langs:
+    if len(item.settings.langs) != item.settings.count_langs:
         raise HTTPException(status_code=400, detail="ОШИБКА! Количество языков не совпадает!")
 
     if len(item.fields) != item.config.count_fields:
         raise HTTPException(status_code=400, detail="ОШИБКА! Количество полей не совпадает!")
 
     for field in item.fields:
-        if len(field.field_title) != len(item.config.langs):
+        if len(field.field_title) != len(item.settings.langs):
             raise HTTPException(status_code=400, detail="ОШИБКА! Пустое название поля: " + str(field.number))
         if field.description is not None:
-            if len(field.description) != len(item.config.langs):
+            if len(field.description) != len(item.settings.langs):
                 raise HTTPException(status_code=400, detail="ОШИБКА! Пустое описание поля: " + str(field.number))
 
     print(item)
