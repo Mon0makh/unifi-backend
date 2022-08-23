@@ -2,10 +2,14 @@ from fastapi import FastAPI, HTTPException
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import PlainTextResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
+from starlette.middleware import Middleware
+from starlette.middleware.cors import CORSMiddleware
 
 from models import LoginForm, LoginFormFields
 
-app = FastAPI()
+app = FastAPI(middleware=[
+    Middleware(CORSMiddleware, allow_origins=["*"])
+])
 
 
 @app.exception_handler(StarletteHTTPException)
@@ -24,7 +28,7 @@ def read_root():
 
 
 @app.post("/LoginForm/")
-async def create_item(item: LoginForm):
+async def login_form_post(item: LoginForm):
     if len(item.settings.langs) != item.settings.count_langs:
         raise HTTPException(status_code=400, detail="ОШИБКА! Количество языков не совпадает!")
 
@@ -43,7 +47,7 @@ async def create_item(item: LoginForm):
 
 
 @app.post("/FormFields/")
-async def create_item(item: LoginFormFields):
+async def test_form_fields(item: LoginFormFields):
     return item
 
 # {
