@@ -7,9 +7,21 @@ from starlette.middleware.cors import CORSMiddleware
 
 from models import LoginForm, LoginFormFields
 
-app = FastAPI(middleware=[
-    Middleware(CORSMiddleware, allow_origins=["*"])
-])
+app = FastAPI()
+
+origins = [
+    "http://localhost",
+    "http://localhost:8080",
+    "http://185.125.88.30:8000",
+    "https://freewifi.ws-gropup.kz/api"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.exception_handler(StarletteHTTPException)
