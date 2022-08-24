@@ -13,13 +13,16 @@ class LoginFormSettings(BaseModel):
     count_fields: int
     api_url: str
 
+
 class BrandIcon(BaseModel):
     brands_img: str
     brands_api_name: str
 
+
 class TextLangs(BaseModel):
     lang: str
     text: str
+
 
 class LoginFormField(BaseModel):
     number: int

@@ -1,0 +1,5 @@
+pymongo[srv]
+ujson==4.0.2
+fastapi==0.79.0
+uvicorn[standard]==0.18.2
+certifi
