@@ -83,18 +83,17 @@ def get_lang_list():
     return langs
 
 
-@app.get("/GetLoginFormFields/")
+@app.get("/GetLoginForm/")
 def get_login_form_fields():
     # form = get_guest_login_form("rus")
-    form = GuestLogin
-    form.lang = form_fields_tmp.settings.langs[0]
+    form = {'lang': form_fields_tmp.settings.langs[0], 'fields': []}
     for var in form_fields_tmp.fields:
-        field_g = GuestFields
-        field_g.type = var.field_type
-        field_g.title = var.field_title[0]
-        field_g.description = var.description[0]
-        field_g.brands = var.brands
-        form.fields.append(field_g)
+        field_g = {
+            'type': var.field_type,
+            'title': var.field_title[0],
+            'description': var.description[0],
+            'brands': var.brands}
+        form['fields'].append(field_g)
     return form
 
 
