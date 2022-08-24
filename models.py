@@ -9,7 +9,6 @@ class LoginFormSettings(BaseModel):
     count_langs: int
     logo_img: str
     bg_img: Union[str, None]
-    bg_color: Union[Color, None]
     count_fields: int
     api_url: str
 
