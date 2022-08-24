@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, File, UploadFile
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import PlainTextResponse
 from fastapi.requests import Request
@@ -6,6 +6,8 @@ from fastapi.responses import Response
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
+
+
 
 from models import LoginForm, LoginFormFields
 from data_verification import login_form_data_verification
@@ -91,3 +93,11 @@ async def admin_auth():
 @app.post("/GuestAuth/")
 async def guest_auth():
     return {}
+
+@app.post("/UploadBGImage/")
+async def create_upload_file(file: UploadFile):
+    return {"filename": file.filename}
+
+@app.post("/UploadLogoImage/")
+async def create_upload_file(file: UploadFile):
+    return {"filename": file.filename}
