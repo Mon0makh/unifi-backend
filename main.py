@@ -7,12 +7,14 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
 
-
-
-from models import LoginForm, LoginFormFields
+from models import LoginForm, LoginFormFields, GuestLogin, GuestFields
 from data_verification import login_form_data_verification
 from connect_db import get_guest_login_form, get_lang_list_from_db
+
 app = FastAPI()
+
+# TEMP
+form_fields_tmp = LoginForm
 
 ALLOWED_ORIGINS = "*"
 
@@ -64,6 +66,7 @@ def read_root():
 @app.post("/LoginForm/")
 async def login_form_post(item: LoginForm):
     code, response_text = login_form_data_verification(item)
+    form_fields_tmp = item
     return Response(content=response_text, status_code=code)
 
 
@@ -81,7 +84,16 @@ def get_lang_list():
 
 @app.get("/GetLoginFormFields/")
 def get_login_form_fields():
-    form = get_guest_login_form("rus")
+    # form = get_guest_login_form("rus")
+    form = GuestLogin
+    form.lang = form_fields_tmp.settings.langs[0]
+    for var in form_fields_tmp.fields:
+        field_g = GuestFields
+        field_g.type = var.field_type
+        field_g.title = var.field_title[0]
+        field_g.description = var.description[0]
+        field_g.brands = var.brands
+        form.fields.append(field_g)
     return form
 
 
@@ -94,6 +106,7 @@ async def admin_auth():
 async def guest_auth():
     return {}
 
+
 @app.post("/UploadBGImage/")
 async def create_upload_file(file: bytes = File(...)):
     if file is None:
@@ -103,6 +116,7 @@ async def create_upload_file(file: bytes = File(...)):
             image.write(file)
             image.close()
         return Response(content="OK", status_code=200)
+
 
 @app.post("/UploadLogoImage/")
 async def create_file(file: bytes = File()):

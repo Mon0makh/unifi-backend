@@ -32,8 +32,6 @@ def save_guest_login_form(fields: LoginForm):
               'settings': {
                   'langs': fields.settings.langs,
                   'count_langs': fields.settings.langs,
-                  'logo_img': fields.settings.logo_img,
-                  'bg_img': fields.settings.bg_img,
                   'count_fields': fields.settings.count_fields,
                   'api_url': fields.settings.api_url},
               }

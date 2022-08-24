@@ -7,8 +7,6 @@ from typing import List, Union
 class LoginFormSettings(BaseModel):
     langs: List[str]
     count_langs: int
-    logo_img: str
-    bg_img: Union[str, None]
     count_fields: int
     api_url: str
 
@@ -21,6 +19,18 @@ class BrandIcon(BaseModel):
 class TextLangs(BaseModel):
     lang: str
     text: str
+
+
+class GuestFields(BaseModel):
+    type: str
+    title: str
+    description: Union[str, None]
+    brands: Union[BrandIcon, None]
+
+
+class GuestLogin(BaseModel):
+    lang: str
+    fields: List[GuestFields]
 
 
 class LoginFormField(BaseModel):
