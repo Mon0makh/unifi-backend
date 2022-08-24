@@ -14,7 +14,7 @@ from connect_db import get_guest_login_form, get_lang_list_from_db
 app = FastAPI()
 
 # TEMP
-form_fields_tmp = LoginForm
+form_fields_tmp = LoginForm()
 
 ALLOWED_ORIGINS = "*"
 
@@ -66,6 +66,7 @@ def read_root():
 @app.post("/LoginForm/")
 async def login_form_post(item: LoginForm):
     code, response_text = login_form_data_verification(item)
+    global form_fields_tmp
     form_fields_tmp = item
     return Response(content=response_text, status_code=code)
 
