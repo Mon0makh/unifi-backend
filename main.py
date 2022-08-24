@@ -95,9 +95,15 @@ async def guest_auth():
     return {}
 
 @app.post("/UploadBGImage/")
-async def create_file(file: bytes = File()):
-    return {"file_size": len(file)}
+async def create_upload_file(file: UploadFile):
+    if not file:
+        return {"message": "No upload file sent"}
+    else:
+        return {"filename": file.filename}
 
 @app.post("/UploadLogoImage/")
-async def create_file(file: bytes = File()):
-    return {"file_size": len(file)}
+async def create_upload_file(file: UploadFile):
+    if not file:
+        return {"message": "No upload file sent"}
+    else:
+        return {"filename": file.filename}
