@@ -94,13 +94,22 @@ async def admin_auth():
 async def guest_auth():
     return {}
 
-@app.post("/uploadfile/")
-async def create_upload_file(file: UploadFile):
-    if not file:
+@app.post("/UploadBGImage/")
+async def create_upload_file(file: bytes = File(...)):
+    if file is None:
         return {"message": "No upload file sent"}
     else:
-        return {"filename": file.filename}
+        with open('imageBG.jpg', 'wb') as image:
+            image.write(file)
+            image.close()
+        return Response(content="OK", status_code=200)
 
 @app.post("/UploadLogoImage/")
 async def create_file(file: bytes = File()):
-    return {"file_size": len(file)}
+    if file is None:
+        return {"message": "No upload file sent"}
+    else:
+        with open('imageLogo.jpg', 'wb') as image:
+            image.write(file)
+            image.close()
+        return Response(content="OK", status_code=200)
