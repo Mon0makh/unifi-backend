@@ -1,15 +1,14 @@
 from pymongo import MongoClient
-import certifi
 
 from config import MONGODB_LINK
 from config import MONGO_DB
 
 from models import LoginForm, LoginFormFields, LoginFormSettings
 
-ca = certifi.where()
+
 
 # Connect to DataBase
-mondb = MongoClient(MONGODB_LINK, tlsCAFile=ca)[MONGO_DB]
+mondb = MongoClient(MONGODB_LINK)[MONGO_DB]
 
 
 def get_lang_list_from_db():

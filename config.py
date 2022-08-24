@@ -1,2 +1,2 @@
-MONGODB_LINK = "mongodb://dev:1q2w3e%T@localhost:27017/?retryWrites=true&w=majority"
-MONGO_DB = "DB"
+MONGODB_LINK = "mongodb://127.0.0.1:27017/?retryWrites=true&w=majority"
+MONGO_DB = "unifi"
