@@ -89,7 +89,8 @@ def get_login_form_fields():
     form = {
         'langs': form_fields_tmp.settings.langs,
         'fields': [],
-        'count_langs': form_fields_tmp.settings.count_langs
+        'count_langs': form_fields_tmp.settings.count_langs,
+        'count_fields': form_fields_tmp.settings.count_fields
     }
 
     for var in form_fields_tmp.fields:
