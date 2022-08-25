@@ -1,8 +1,9 @@
-from fastapi import FastAPI, HTTPException, File, UploadFile
+from fastapi import FastAPI, HTTPException, File, UploadFile, Depends, status, Header
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import PlainTextResponse
 from fastapi.requests import Request
 from fastapi.responses import Response
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
@@ -11,10 +12,10 @@ from models import LoginForm, LoginFormFields, GuestLogin, GuestFields
 from data_verification import login_form_data_verification
 from connect_db import get_guest_login_form, get_lang_list_from_db
 
+from admin_auth import login_for_access_token, Token, User, get_current_active_user
+
 app = FastAPI()
 
-# TEMP
-form_fields_tmp = LoginForm
 
 ALLOWED_ORIGINS = "*"
 
@@ -62,19 +63,22 @@ def read_root():
     return Response(content="Server OK", status_code=200)
 
 
+@app.post("/AdministratorSignIn", response_model=Token)
+async def login_admin(form_data: OAuth2PasswordRequestForm = Depends()):
+    return await login_for_access_token(form_data)
+
+
+@app.get("/users/me/", response_model=User)
+async def read_users_me(current_user: User = Depends(get_current_active_user)):
+    return current_user
+
+
 # TODO функция аутентификации
 @app.post("/LoginForm/")
-async def login_form_post(item: LoginForm):
+async def login_form_post(item: LoginForm, current_user: User = Depends(get_current_active_user)):
     code, response_text = login_form_data_verification(item)
-    global form_fields_tmp
-    form_fields_tmp = item
     return Response(content=response_text, status_code=code)
 
-
-## Временное
-@app.post("/FormFields/")
-async def test_form_fields(item: LoginFormFields):
-    return item
 
 
 @app.get("/GetLangsList/")
@@ -83,30 +87,25 @@ def get_lang_list():
     return langs
 
 
-@app.get("/GetLoginForm/")
-def get_login_form_fields():
-    # form = get_guest_login_form("rus")
+@app.get("/GetLoginForm/{lang}")
+async def get_login_form_fields(lang: str):
+    form_db = get_guest_login_form(lang)
     form = {
-        'langs': form_fields_tmp.settings.langs,
+        'langs': form_db['settings']['langs'],
         'fields': [],
-        'count_langs': form_fields_tmp.settings.count_langs,
-        'count_fields': form_fields_tmp.settings.count_fields
+        'count_langs': form_db['settings']['count_langs'],
+        'count_fields': form_db['settings']['count_fields']
     }
 
-    for var in form_fields_tmp.fields:
+    for field in form_db.fields:
         field_g = {
-            'type': var.field_type,
-            'title': var.field_title[0],
-            'description': var.description[0],
-            'brands': var.brands
+            'type': field['field_type'],
+            'title': field['title'][lang],
+            'description': field.get('description').get(lang),
+            'brands': field.get('brands')
         }
         form['fields'].append(field_g)
     return form
-
-
-@app.post("/AdminAuth/")
-async def admin_auth():
-    return {}
 
 
 @app.post("/GuestAuth/")
@@ -115,22 +114,43 @@ async def guest_auth():
 
 
 @app.post("/UploadBGImage/")
-async def create_upload_file(file: bytes = File(...)):
+async def create_upload_file(
+        file: bytes = File(),
+        current_user: User = Depends(get_current_active_user)
+    ):
     if file is None:
         return {"message": "No upload file sent"}
     else:
-        with open('imageBG.jpg', 'wb') as image:
+        with open('imageBG.png', 'wb') as image:
             image.write(file)
             image.close()
         return Response(content="OK", status_code=200)
 
 
 @app.post("/UploadLogoImage/")
-async def create_file(file: bytes = File()):
+async def create_file(
+        file: bytes = File(),
+        current_user: User = Depends(get_current_active_user)
+    ):
     if file is None:
         return {"message": "No upload file sent"}
     else:
-        with open('imageLogo.jpg', 'wb') as image:
+
+        with open('imageLogo.png', 'wb') as image:
+            image.write(file)
+            image.close()
+        return Response(content="OK", status_code=200)
+
+
+@app.post("/UploadBrandImage/")
+async def create_file(
+        file: bytes = File(),
+        current_user: User = Depends(get_current_active_user)
+    ):
+    if file is None:
+        return {"message": "No upload file sent"}
+    else:
+        with open('imageLogo.png', 'wb') as image:
             image.write(file)
             image.close()
         return Response(content="OK", status_code=200)

@@ -1,7 +1,39 @@
-from pydantic import BaseModel, ValidationError
+from datetime import datetime
+
+from pydantic import BaseModel, ValidationError, UUID4, Field, validator
 from pydantic.color import Color
 
-from typing import List, Union
+from typing import List, Union, Optional
+
+
+class UserCreate(BaseModel):
+    name: str
+    password: str
+
+
+class UserBase(BaseModel):
+    """ Формирует тело ответа с деталями пользователя """
+    id: int
+    name: str
+
+
+class TokenBase(BaseModel):
+    token: UUID4 = Field(..., alias="access_token")
+    expires: datetime
+    token_type: Optional[str] = "bearer"
+
+    class Config:
+        allow_population_by_field_name = True
+
+    @validator("token")
+    def hexlify_token(cls, value):
+        """ Конвертирует UUID в hex строку """
+        return value.hex
+
+
+class User(UserBase):
+    """ Формирует тело ответа с деталями пользователя и токеном """
+    token: TokenBase = {}
 
 
 class LoginFormSettings(BaseModel):
@@ -9,11 +41,6 @@ class LoginFormSettings(BaseModel):
     count_langs: int
     count_fields: int
     api_url: str
-
-
-class BrandIcon(BaseModel):
-    brands_img: str
-    brands_api_name: str
 
 
 class TextLangs(BaseModel):
@@ -25,7 +52,7 @@ class GuestFields(BaseModel):
     type: str
     title: str
     description: Union[str, None]
-    brands: Union[BrandIcon, None]
+    brand_icon: Union[str, None]
 
 
 class GuestLogin(BaseModel):
@@ -40,7 +67,7 @@ class LoginFormField(BaseModel):
     api_name: Union[str, None]
     field_title: List[TextLangs]
     description: Union[List[TextLangs], None]
-    brands: Union[BrandIcon, None]
+    brand_icon: Union[str, None]
 
 
 class LoginFormFields(BaseModel):
