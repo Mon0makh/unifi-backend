@@ -29,7 +29,8 @@ class GuestFields(BaseModel):
 
 
 class GuestLogin(BaseModel):
-    lang: str
+    langs: List[str]
+    count_langs: int
     fields: List[GuestFields]
 
 
