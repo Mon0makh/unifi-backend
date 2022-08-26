@@ -51,13 +51,14 @@ def save_admin_token(login: str, token: str, expires: datetime):
 
 def save_guest_login_form(fields: LoginForm):
     form = {'settings': {
-        'login': fields.login,
-        'settings': {
-            'langs': fields.settings.langs,
-            'count_langs': fields.settings.langs,
-            'count_fields': fields.settings.count_fields,
-            'api_url': fields.settings.api_url},
-    }}
+                'login': fields.login,
+                'langs': fields.settings.langs,
+                'count_langs': fields.settings.langs,
+                'count_fields': fields.settings.count_fields,
+                'api_url': fields.settings.api_url
+                },
+            'fields': []
+    }
 
     for field in fields.fields:
         field_g = {'type': field.field_type, 'brand_icon': field.brand_icon}
