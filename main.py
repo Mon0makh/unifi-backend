@@ -97,7 +97,7 @@ async def get_login_form_fields(lang: str):
         'count_fields': form_db['settings']['count_fields']
     }
 
-    for field in form_db.fields:
+    for field in form_db['fields']:
         field_g = {
             'type': field['field_type'],
             'title': field['title'][lang],

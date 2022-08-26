@@ -53,7 +53,7 @@ def save_guest_login_form(fields: LoginForm):
     form = {'settings': {
                 'login': fields.login,
                 'langs': fields.settings.langs,
-                'count_langs': fields.settings.langs,
+                'count_langs': fields.settings.count_langs,
                 'count_fields': fields.settings.count_fields,
                 'api_url': fields.settings.api_url
                 },
@@ -61,11 +61,11 @@ def save_guest_login_form(fields: LoginForm):
     }
 
     for field in fields.fields:
-        field_g = {'type': field.field_type, 'brand_icon': field.brand_icon}
+        field_g = {'type': field.field_type, 'brand_icon': field.brand_icon, 'title': [], 'description': []}
 
         for lang_index in range(fields.settings.count_langs):
-            field_g['title']: {field.field_title[lang_index].lang: field.field_title[lang_index].text}
-            field_g['description']: {field.field_title[lang_index].lang: field.description[lang_index].text}
+            field_g['title'].append({field.field_title[lang_index].lang: field.field_title[lang_index].text})
+            field_g['description'].append({field.field_title[lang_index].lang: field.description[lang_index].text})
 
         form['fields'].append(field_g)
 
