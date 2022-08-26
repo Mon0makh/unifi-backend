@@ -59,11 +59,11 @@ def get_admin_login(login: str):
     user_db = mondb.admins.find_one({'username': login})
     if user_db is not None:
         user = {login: {
-            "username": user_db.username,
-            "full_name": user_db.full_name,
-            "email": user_db.email,
-            "hashed_password": user_db.hashed_password,
-            "disable": user_db.disable
+            "username": user_db['username'],
+            "full_name": user_db['full_name'],
+            "email": user_db['email'],
+            "hashed_password": user_db['hashed_password'],
+            "disable": user_db['disable']
         }}
         return user
 
