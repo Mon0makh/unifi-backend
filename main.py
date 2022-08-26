@@ -89,12 +89,6 @@ def get_lang_list():
     return langs
 
 
-@app.get("/GetLoginFormLangs/")
-async def get_login_form_langs():
-    langs = get_lang_list_form()
-    return langs
-
-
 @app.get("/GetLoginForm/{lang}")
 async def get_login_form_fields(lang: str):
     form = get_guest_login_form(lang)
@@ -110,21 +104,21 @@ async def guest_auth(form: GuestLogin):
 async def create_upload_file(
         file: bytes = File(),
         current_user: User = Depends(get_current_active_user)
-):
+    ):
     if file is None:
         return {"message": "No upload file sent"}
     else:
         with open('imageBG.png', 'wb') as image:
             image.write(file)
             image.close()
-        return Response(content="OK", status_code=200)
+        return Response(content="imageBG", status_code=200)
 
 
 @app.post("/UploadLogoImage/")
 async def create_file(
         file: bytes = File(),
         current_user: User = Depends(get_current_active_user)
-):
+    ):
     if file is None:
         return {"message": "No upload file sent"}
     else:
@@ -132,18 +126,19 @@ async def create_file(
         with open('imageLogo.png', 'wb') as image:
             image.write(file)
             image.close()
-        return Response(content="OK", status_code=200)
+        return Response(content="imageLogo", status_code=200)
 
 
 @app.post("/UploadBrandImage/")
 async def create_file(
+        number: int,
         file: bytes = File(),
         current_user: User = Depends(get_current_active_user)
-):
+    ):
     if file is None:
         return {"message": "No upload file sent"}
     else:
-        with open('imageLogo.png', 'wb') as image:
+        with open('imageBrand'+str(number)+'.png', 'wb') as image:
             image.write(file)
             image.close()
-        return Response(content="OK", status_code=200)
+        return Response(content='imageBrand'+str(number)+'.png', status_code=200)

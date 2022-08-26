@@ -7,12 +7,7 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from models import User, UserInDB, TokenData
 from connect_db import get_admin_login
-
-# to get a string like this run:
-# openssl rand -hex 32
-SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 300
+from config import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
 
 # fake_users_db = {
 #     "admin": {
@@ -26,10 +21,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 300
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="AdministratorSignIn")
-
-app = FastAPI()
 
 
 def get_user_from_db(login: str):
@@ -109,4 +101,4 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     access_token = create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {"access_token": access_token, "token_type": "Bearer"}

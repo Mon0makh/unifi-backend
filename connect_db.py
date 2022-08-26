@@ -1,41 +1,30 @@
 from pymongo import MongoClient
-from datetime import datetime, timedelta
-from config import MONGODB_LINK
-from config import MONGO_DB
 
-from models import LoginForm, LoginFormFields, LoginFormSettings
+from config import MONGODB_LINK, MONGO_DB
+
+from models import LoginForm
 
 # Connect to DataBase
 mondb = MongoClient(MONGODB_LINK)[MONGO_DB]
 
 
 def get_lang_list_from_db():
-    langs_db = mondb.langs_list.find({})
+    try:
+        langs_db = mondb.langs_list.find({})
+    except:
+        # TODO LOGING
+        return []
+
     langs = {lang['lang'] for lang in langs_db}
-
-    # try:
-    #
-    # except:
-    #     return 0
-
-    return langs
-
-
-def get_lang_list_form():
-    form_db = mondb.login_form.find_one({'_key': 0})
-    langs_db = form_db['settings']['langs'],
-    langs = {lang for lang in langs_db}
-
-    # try:
-    #
-    # except:
-    #     return 0
-
     return langs
 
 
 def get_guest_login_form(lang: str):
-    form_db = mondb.login_form.find_one({'_key': 0})
+    try:
+        form_db = mondb.login_form.find_one({'_key': 0})
+    except:
+        # TODO LOGING
+        return {}
 
     form = {
         'langs': form_db['settings']['langs'],
@@ -56,7 +45,12 @@ def get_guest_login_form(lang: str):
 
 
 def get_admin_login(login: str):
-    user_db = mondb.admins.find_one({'username': login})
+    try:
+        user_db = mondb.admins.find_one({'username': login})
+    except:
+        # TODO LOGGING
+        return None
+
     if user_db is not None:
         user = {
             "username": user_db['username'],
@@ -72,11 +66,17 @@ def get_admin_login(login: str):
 
 
 def save_admin_user():
-    pass
+    pass  # TODO
 
 
 def get_guest_login_form_to_admin():
-    form_db = mondb.login_form.find_one({'_key': 0})
+    try:
+        form_db = mondb.login_form.find_one({'_key': 0})
+        if form_db is None:
+            raise Exception('NO FORM in database!')
+    except:
+        return {}
+
     form = {'settings': {
         'login': form_db['settings']['login'],
         'langs': form_db['settings']['langs'],
@@ -92,7 +92,7 @@ def get_guest_login_form_to_admin():
 
         for lang in form_db['settings']['langs']:
             field_g['title'][lang] = field['title'][lang]
-            if field.get('description') is not None:
+            if len(field.get('description')) > 0:
                 field_g['description'][lang] = field['description'][lang]
 
         form['fields'].append(field_g)
@@ -101,28 +101,33 @@ def get_guest_login_form_to_admin():
 
 
 def save_guest_login_form(fields: LoginForm):
-    form = {'settings': {
-        'login': fields.login,
-        'langs': fields.settings.langs,
-        'count_langs': fields.settings.count_langs,
-        'count_fields': fields.settings.count_fields,
-        'api_url': fields.settings.api_url
-    },
-        'fields': []
-    }
+    try:
+        form = {'settings': {
+            'login': fields.login,
+            'langs': fields.settings.langs,
+            'count_langs': fields.settings.count_langs,
+            'count_fields': fields.settings.count_fields,
+            'api_url': fields.settings.api_url
+        },
+            'fields': []
+        }
 
-    for field in fields.fields:
-        field_g = {'type': field.field_type, 'brand_icon': field.brand_icon, 'title': {}, 'description': {}}
+        for field in fields.fields:
+            field_g = {'type': field.field_type, 'brand_icon': field.brand_icon, 'title': {}, 'description': {}}
 
-        for lang_index in range(fields.settings.count_langs):
-            field_g['title'][field.field_title[lang_index].lang] = field.field_title[lang_index].text
-            if field.description is not None:
-                field_g['description'][field.description[lang_index].lang] = field.description[lang_index].text
+            for lang_index in range(fields.settings.count_langs):
+                field_g['title'][field.field_title[lang_index].lang] = field.field_title[lang_index].text
+                if field.description is not None:
+                    field_g['description'][field.description[lang_index].lang] = field.description[lang_index].text
 
-        form['fields'].append(field_g)
+            form['fields'].append(field_g)
 
-    mondb.login_form.update_one(
-        {'_key': 0},
-        {'$set': form}
-    )
+        mondb.login_form.update_one(
+            {'_key': 0},
+            {'$set': form}
+        )
+
+    except:
+        return True
+
     return False

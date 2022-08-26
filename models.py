@@ -1,9 +1,6 @@
-from datetime import datetime
+from pydantic import BaseModel
 
-from pydantic import BaseModel, ValidationError, UUID4, Field, validator
-from pydantic.color import Color
-
-from typing import List, Union, Optional
+from typing import List, Union
 
 
 class Token(BaseModel):
@@ -24,6 +21,7 @@ class User(BaseModel):
 
 class UserInDB(User):
     hashed_password: str
+
 
 class LoginFormSettings(BaseModel):
     langs: List[str]

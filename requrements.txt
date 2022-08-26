@@ -5,3 +5,4 @@ uvicorn[standard]==0.18.2
 python-jose[cryptography]
 passlib[bcrypt]
 python-multipart
+requests
