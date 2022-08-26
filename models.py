@@ -62,7 +62,6 @@ class GuestLogin(BaseModel):
 
 
 class LoginFormField(BaseModel):
-    number: int
     field_type: str
     api_name: Union[str, None]
     field_title: List[TextLangs]
