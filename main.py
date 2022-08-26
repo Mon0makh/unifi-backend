@@ -10,12 +10,11 @@ from starlette.middleware.cors import CORSMiddleware
 
 from models import LoginForm, LoginFormFields, GuestLogin, GuestFields
 from data_verification import login_form_data_verification
-from connect_db import get_guest_login_form, get_lang_list_from_db
+from connect_db import get_guest_login_form, get_lang_list_from_db, get_lang_list_form
 
 from admin_auth import login_for_access_token, Token, User, get_current_active_user
 
 app = FastAPI()
-
 
 ALLOWED_ORIGINS = "*"
 
@@ -80,44 +79,34 @@ async def login_form_post(item: LoginForm, current_user: User = Depends(get_curr
     return Response(content=response_text, status_code=code)
 
 
-
-@app.get("/GetLangsList/")
+@app.get("/GetAllLangsList/")
 def get_lang_list():
     langs = get_lang_list_from_db()
     return langs
 
 
+@app.get("/GetLoginFormLangs/")
+async def get_login_form_langs():
+    langs = get_lang_list_form()
+    return langs
+
+
 @app.get("/GetLoginForm/{lang}")
 async def get_login_form_fields(lang: str):
-    form_db = get_guest_login_form(lang)
-    form = {
-        'langs': form_db['settings']['langs'],
-        'fields': [],
-        'count_langs': form_db['settings']['count_langs'],
-        'count_fields': form_db['settings']['count_fields']
-    }
-
-    for field in form_db['fields']:
-        field_g = {
-            'type': field['type'],
-            'title': field['title'][lang],
-            'description': field.get('description').get(lang),
-            'brands': field.get('brands')
-        }
-        form['fields'].append(field_g)
+    form = get_guest_login_form(lang)
     return form
 
 
 @app.post("/GuestAuth/")
-async def guest_auth():
-    return {}
+async def guest_auth(form: GuestLogin):
+    return {"OK"}
 
 
 @app.post("/UploadBGImage/")
 async def create_upload_file(
         file: bytes = File(),
         current_user: User = Depends(get_current_active_user)
-    ):
+):
     if file is None:
         return {"message": "No upload file sent"}
     else:
@@ -131,7 +120,7 @@ async def create_upload_file(
 async def create_file(
         file: bytes = File(),
         current_user: User = Depends(get_current_active_user)
-    ):
+):
     if file is None:
         return {"message": "No upload file sent"}
     else:
@@ -146,7 +135,7 @@ async def create_file(
 async def create_file(
         file: bytes = File(),
         current_user: User = Depends(get_current_active_user)
-    ):
+):
     if file is None:
         return {"message": "No upload file sent"}
     else:
