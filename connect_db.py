@@ -56,7 +56,7 @@ def get_guest_login_form(lang: str):
 
 
 def get_admin_login(login: str):
-    user_db = mondb.admins.find_one({'login': login})
+    user_db = mondb.admins.find_one({'username': login})
     if user_db is not None:
         user = {login: {
             "username": user_db.username,
