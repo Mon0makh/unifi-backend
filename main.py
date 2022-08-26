@@ -100,7 +100,7 @@ async def get_login_form_fields(lang: str):
     for field in form_db['fields']:
         field_g = {
             'type': field['type'],
-            'title': field['title']['lang'],
+            'title': field['title'][lang],
             'description': field.get('description').get(lang),
             'brands': field.get('brands')
         }
