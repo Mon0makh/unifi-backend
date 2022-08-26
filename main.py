@@ -10,7 +10,7 @@ from starlette.middleware.cors import CORSMiddleware
 
 from models import LoginForm, LoginFormFields, GuestLogin, GuestFields
 from data_verification import login_form_data_verification
-from connect_db import get_guest_login_form, get_lang_list_from_db, get_lang_list_form
+from connect_db import get_guest_login_form, get_lang_list_from_db, get_lang_list_form, get_guest_login_form_to_admin
 
 from admin_auth import login_for_access_token, Token, User, get_current_active_user
 
@@ -72,11 +72,14 @@ async def read_users_me(current_user: User = Depends(get_current_active_user)):
     return current_user
 
 
-# TODO функция аутентификации
 @app.post("/LoginForm/")
 async def login_form_post(item: LoginForm, current_user: User = Depends(get_current_active_user)):
     code, response_text = login_form_data_verification(item)
     return Response(content=response_text, status_code=code)
+
+@app.get("/GetAdminLoginForm/")
+async def login_form_post(current_user: User = Depends(get_current_active_user)):
+    return get_guest_login_form_to_admin()
 
 
 @app.get("/GetAllLangsList/")
