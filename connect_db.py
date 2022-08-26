@@ -115,7 +115,8 @@ def save_guest_login_form(fields: LoginForm):
 
         for lang_index in range(fields.settings.count_langs):
             field_g['title'][field.field_title[lang_index].lang] = field.field_title[lang_index].text
-            field_g['description'][field.description[lang_index].lang] = field.description[lang_index].text
+            if field.description[lang_index].lang is not None:
+                field_g['description'][field.description[lang_index].lang] = field.description[lang_index].text
 
         form['fields'].append(field_g)
 
