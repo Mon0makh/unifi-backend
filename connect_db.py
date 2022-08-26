@@ -58,13 +58,13 @@ def get_guest_login_form(lang: str):
 def get_admin_login(login: str):
     user_db = mondb.admins.find_one({'username': login})
     if user_db is not None:
-        user = {login: {
+        user = {
             "username": user_db['username'],
             "full_name": user_db['full_name'],
             "email": user_db['email'],
             "hashed_password": user_db['hashed_password'],
             "disable": user_db['disable']
-        }}
+        }
         return user
 
     else:
@@ -78,21 +78,22 @@ def save_admin_user():
 def get_guest_login_form_to_admin():
     form_db = mondb.login_fom.find_one({'_key': 0})
     form = {'settings': {
-        'login': form_db.login,
-        'langs': form_db.settings.langs,
-        'count_langs': form_db.settings.count_langs,
-        'count_fields': form_db.settings.count_fields,
-        'api_url': form_db.settings.api_url
+        'login': form_db['login'],
+        'langs': form_db['settings']['langs'],
+        'count_langs': form_db['settings']['count_langs'],
+        'count_fields': form_db['settings']['count_fields'],
+        'api_url': form_db['settings']['api_url']
     },
         'fields': []
     }
 
-    for field in form_db.fields:
-        field_g = {'type': field.field_type, 'brand_icon': field.brand_icon, 'title': {}, 'description': {}}
+    for field in form_db['fields']:
+        field_g = {'type': field['field_type'], 'brand_icon': field['brand_icon'], 'title': {}, 'description': {}}
 
-        for lang_index in range(form_db.settings.count_langs):
-            field_g['title'][field.field_title[lang_index].lang] = field.field_title[lang_index].text
-            field_g['description'][field.description[lang_index].lang] = field.description[lang_index].text
+        for lang_index in range(form_db['settings']['count_langs']):
+            field_g['title'][field['field_title'][lang_index]['lang']] = field['field_title'][lang_index]['text']
+            if field.get('description') is not None:
+                field_g['description'][field['description'][lang_index]['lang']] = field['description'][lang_index]['text']
 
         form['fields'].append(field_g)
 
@@ -115,7 +116,7 @@ def save_guest_login_form(fields: LoginForm):
 
         for lang_index in range(fields.settings.count_langs):
             field_g['title'][field.field_title[lang_index].lang] = field.field_title[lang_index].text
-            if field.description[lang_index].lang is not None:
+            if field.description is not None:
                 field_g['description'][field.description[lang_index].lang] = field.description[lang_index].text
 
         form['fields'].append(field_g)

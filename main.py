@@ -77,6 +77,7 @@ async def login_form_post(item: LoginForm, current_user: User = Depends(get_curr
     code, response_text = login_form_data_verification(item)
     return Response(content=response_text, status_code=code)
 
+
 @app.get("/GetAdminLoginForm/")
 async def login_form_post(current_user: User = Depends(get_current_active_user)):
     return get_guest_login_form_to_admin()
