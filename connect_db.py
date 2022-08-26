@@ -56,28 +56,23 @@ def get_guest_login_form(lang: str):
 
 
 def get_admin_login(login: str):
-    return mondb.admins.find_one({'login': login})
-
-
-def get_admin_by_token(token: str):
-    user = mondb.admins.find_one({'token': token})
-    if user.expires > datetime.now():
+    user_db = mondb.admins.find_one({'login': login})
+    if user_db is not None:
+        user = {login: {
+            "username": user_db.username,
+            "full_name": user_db.full_name,
+            "email": user_db.email,
+            "hashed_password": user_db.hashed_password,
+            "disable": user_db.disable
+        }}
         return user
+
     else:
         return None
 
 
 def save_admin_user():
     pass
-
-
-def save_admin_token(login: str, token: str, expires: datetime):
-    user = mondb.admins.find_one({'login': login})
-    mondb.admins.update_one(
-        {'_id': user['_id']},
-        {'$set': {'token': token,
-                  'expires': expires}}
-    )
 
 
 def get_guest_login_form_to_admin():

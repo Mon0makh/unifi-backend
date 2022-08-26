@@ -6,35 +6,24 @@ from pydantic.color import Color
 from typing import List, Union, Optional
 
 
-class UserCreate(BaseModel):
-    name: str
-    password: str
+class Token(BaseModel):
+    access_token: str
+    token_type: str
 
 
-class UserBase(BaseModel):
-    """ Формирует тело ответа с деталями пользователя """
-    id: int
-    name: str
+class TokenData(BaseModel):
+    username: Union[str, None] = None
 
 
-class TokenBase(BaseModel):
-    token: UUID4 = Field(..., alias="access_token")
-    expires: datetime
-    token_type: Optional[str] = "bearer"
-
-    class Config:
-        allow_population_by_field_name = True
-
-    @validator("token")
-    def hexlify_token(cls, value):
-        """ Конвертирует UUID в hex строку """
-        return value.hex
+class User(BaseModel):
+    username: str
+    email: Union[str, None] = None
+    full_name: Union[str, None] = None
+    disabled: Union[bool, None] = None
 
 
-class User(UserBase):
-    """ Формирует тело ответа с деталями пользователя и токеном """
-    token: TokenBase = {}
-
+class UserInDB(User):
+    hashed_password: str
 
 class LoginFormSettings(BaseModel):
     langs: List[str]
