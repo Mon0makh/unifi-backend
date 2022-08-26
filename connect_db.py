@@ -19,7 +19,7 @@ def get_lang_list_from_db():
 
 
 def get_guest_login_form(lang: str):
-    form = mondb.login_fields.find_one({'_key': 0})
+    form = mondb.login_form.find_one({'_key': 0})
 
     return form
 
@@ -41,7 +41,7 @@ def save_admin_user():
 
 
 def save_admin_token(login: str, token: str, expires: datetime):
-    user = mondb.find_one({'login': login})
+    user = mondb.admins.find_one({'login': login})
     mondb.admins.update_one(
         {'_id': user['_id']},
         {'$set': {'token': token,
