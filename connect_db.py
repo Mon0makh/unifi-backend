@@ -76,9 +76,9 @@ def save_admin_user():
 
 
 def get_guest_login_form_to_admin():
-    form_db = mondb.login_fom.find_one({'_key': 0})
+    form_db = mondb.login_form.find_one({'_key': 0})
     form = {'settings': {
-        'login': form_db['login'],
+        'login': form_db['settings']['login'],
         'langs': form_db['settings']['langs'],
         'count_langs': form_db['settings']['count_langs'],
         'count_fields': form_db['settings']['count_fields'],
@@ -88,12 +88,12 @@ def get_guest_login_form_to_admin():
     }
 
     for field in form_db['fields']:
-        field_g = {'type': field['field_type'], 'brand_icon': field['brand_icon'], 'title': {}, 'description': {}}
+        field_g = {'type': field['type'], 'brand_icon': field['brand_icon'], 'title': {}, 'description': {}}
 
-        for lang_index in range(form_db['settings']['count_langs']):
-            field_g['title'][field['field_title'][lang_index]['lang']] = field['field_title'][lang_index]['text']
+        for lang in form_db['settings']['langs']:
+            field_g['title'][lang] = field['title'][lang]
             if field.get('description') is not None:
-                field_g['description'][field['description'][lang_index]['lang']] = field['description'][lang_index]['text']
+                field_g['description'][lang] = field['description'][lang]
 
         form['fields'].append(field_g)
 
