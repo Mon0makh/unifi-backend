@@ -64,6 +64,13 @@ def get_admin_login(login: str):
     else:
         return None
 
+def get_url():
+    try:
+        url = mondb.login_form.find_one({'_key': 0})['settings']['api_url']
+        return url
+    except:
+        # TODO
+        return ""
 
 def save_admin_user():
     pass  # TODO

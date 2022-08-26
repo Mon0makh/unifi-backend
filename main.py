@@ -10,7 +10,7 @@ from starlette.middleware.cors import CORSMiddleware
 
 from models import LoginForm, LoginFormFields, GuestLogin, GuestFields, Token, User
 from data_verification import login_form_data_verification
-from connect_db import get_guest_login_form, get_lang_list_from_db, get_lang_list_form, get_guest_login_form_to_admin
+from connect_db import get_guest_login_form, get_lang_list_from_db, get_guest_login_form_to_admin
 
 from admin_auth import login_for_access_token, get_current_active_user
 

@@ -38,12 +38,13 @@ class TextLangs(BaseModel):
 class GuestFields(BaseModel):
     type: str
     title: str
+    api_name: str
     description: Union[str, None]
     brand_icon: Union[str, None]
 
 
 class GuestLogin(BaseModel):
-    count_lang: int
+    count_lang: str
     fields: List[GuestFields]
 
 
