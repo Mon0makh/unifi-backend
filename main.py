@@ -106,13 +106,14 @@ async def guest_auth(form: GuestLogin):
 
 @app.post("/UploadBGImage/")
 async def create_upload_file(
+        img_type: str,
         file: bytes = File(),
         current_user: User = Depends(get_current_active_user)
     ):
     if file is None:
         return {"message": "No upload file sent"}
     else:
-        with open(os.path.abspath('/var/www/html/img/imageBG.png'), 'wb') as image:
+        with open(os.path.abspath('/var/www/html/img/imageBG.' + img_type), 'wb') as image:
             image.write(file)
             image.close()
         return Response(content="imageBG", status_code=200)
@@ -120,6 +121,7 @@ async def create_upload_file(
 
 @app.post("/UploadLogoImage/")
 async def create_file(
+        img_type: str,
         file: bytes = File(),
         current_user: User = Depends(get_current_active_user)
     ):
@@ -127,7 +129,7 @@ async def create_file(
         return {"message": "No upload file sent"}
     else:
 
-        with open(os.path.abspath('/var/www/html/img/imageLogo.png'), 'wb') as image:
+        with open(os.path.join('/', 'var/www/html/img/imageLogo.'+img_type), 'wb') as image:
             image.write(file)
             image.close()
         return Response(content="imageLogo", status_code=200)
@@ -135,6 +137,7 @@ async def create_file(
 
 @app.post("/UploadBrandImage/")
 async def create_file(
+        img_type: str,
         number: int,
         file: bytes = File(),
         current_user: User = Depends(get_current_active_user)
@@ -142,7 +145,7 @@ async def create_file(
     if file is None:
         return {"message": "No upload file sent"}
     else:
-        with open(os.path.abspath('/var/www/html/img/imageBrand'+str(number)+'.png'), 'wb') as image:
+        with open(os.path.abspath('/var/www/html/img/imageBrand'+str(number)+'.' + img_type), 'wb') as image:
             image.write(file)
             image.close()
         return Response(content='imageBrand'+str(number)+'.png', status_code=200)

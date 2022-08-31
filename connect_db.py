@@ -63,7 +63,7 @@ def get_admin_login(login: str):
             "full_name": user_db['full_name'],
             "email": user_db['email'],
             "hashed_password": user_db['hashed_password'],
-            "disabled": user_db['disable']
+            "disabled": user_db['disabled']
         }
         return user
 
