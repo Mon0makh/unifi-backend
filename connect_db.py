@@ -43,7 +43,7 @@ def get_guest_login_form(lang: str):
                 'type': field['type'],
                 'title': field['title'][lang],
                 'description': field.get('description').get(lang),
-                'brands': field.get('brands')
+                'brand_icon': field.get('brand_icon')
             }
             form['fields'].append(field_g)
         return form

@@ -148,4 +148,5 @@ async def create_file(
         with open('/var/www/html/img/imageBrand'+str(number)+'.' + img_type, 'wb') as image:
             image.write(file)
             image.close()
-        return Response(content='imageBrand'+str(number)+'.png', status_code=200)
+
+        return Response(content='imageBrand'+str(number)+'.' + img_type, status_code=200)
