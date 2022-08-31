@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, File, UploadFile, Depends, status, Header
+from fastapi import FastAPI, HTTPException, File, UploadFile, Depends, status, Header, Form
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import PlainTextResponse
 from fastapi.requests import Request
@@ -106,8 +106,8 @@ async def guest_auth(form: GuestLogin):
 
 @app.post("/UploadBGImage/")
 async def create_upload_file(
-        img_type: str,
         file: bytes = File(),
+        img_type: str = Form(),
         current_user: User = Depends(get_current_active_user)
     ):
     if file is None:
@@ -121,8 +121,8 @@ async def create_upload_file(
 
 @app.post("/UploadLogoImage/")
 async def create_file(
-        img_type: str,
         file: bytes = File(),
+        img_type: str = Form(),
         current_user: User = Depends(get_current_active_user)
     ):
     if file is None:
@@ -137,9 +137,9 @@ async def create_file(
 
 @app.post("/UploadBrandImage/")
 async def create_file(
-        img_type: str,
-        number: int,
         file: bytes = File(),
+        img_type: str = Form(),
+        number: int = Form(),
         current_user: User = Depends(get_current_active_user)
     ):
     if file is None:
