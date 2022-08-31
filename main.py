@@ -113,7 +113,7 @@ async def create_upload_file(
     if file is None:
         return {"message": "No upload file sent"}
     else:
-        with open(os.path.abspath('/var/www/html/img/imageBG.' + img_type), 'wb') as image:
+        with open('/var/www/html/img/imageBG.' + img_type, 'wb') as image:
             image.write(file)
             image.close()
         return Response(content="imageBG", status_code=200)
@@ -129,7 +129,7 @@ async def create_file(
         return {"message": "No upload file sent"}
     else:
 
-        with open(os.path.join('/', 'var/www/html/img/imageLogo.'+img_type), 'wb') as image:
+        with open('/var/www/html/img/imageLogo.'+img_type, 'wb') as image:
             image.write(file)
             image.close()
         return Response(content="imageLogo", status_code=200)
@@ -145,7 +145,7 @@ async def create_file(
     if file is None:
         return {"message": "No upload file sent"}
     else:
-        with open(os.path.abspath('/var/www/html/img/imageBrand'+str(number)+'.' + img_type), 'wb') as image:
+        with open('/var/www/html/img/imageBrand'+str(number)+'.' + img_type, 'wb') as image:
             image.write(file)
             image.close()
         return Response(content='imageBrand'+str(number)+'.png', status_code=200)
