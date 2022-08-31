@@ -10,7 +10,8 @@ def login_form_data_verification(item: LoginForm):
         return 400, "Error! Number of fields does not match!"
 
     for field_numb in range(len(item.fields)):
-        if len(item.fields[field_numb].field_title) != len(item.settings.langs):
+        if len(item.fields[field_numb].field_title) != item.settings.count_langs:
+
             return 400, "Error! Empty field title: " + str(field_numb)
         if item.fields[field_numb].description is not None:
             if len(item.fields[field_numb].description) != len(item.settings.langs):

@@ -9,16 +9,17 @@ mondb = MongoClient(MONGODB_LINK)[MONGO_DB]
 
 
 def get_lang_list_from_db():
-    try:
-        langs_db = mondb.lang_list.find({})
-    except:
-        # TODO LOGING
-        return []
-    langs = []
-    for i in range(4, -1, -1):
-        for lang in langs_db:
-            if lang['number'] == i:
-                langs.append(lang['lang'])
+    # try:
+    #     langs_db = mondb.lang_list.find({})
+    # except:
+    #     # TODO LOGING
+    #     return []
+    # langs = []
+    # for i in range(4, -1, -1):
+    #     for lang in langs_db:
+    #         if lang['number'] == i:
+    #             langs.append(lang['lang'])
+    langs = ['rus', 'eng', 'kaz', 'tur', 'ita']
     # langs = {lang['lang'] for lang in langs_db}
     return langs
 
@@ -29,7 +30,7 @@ def get_guest_login_form(lang: str):
     except:
         # TODO LOGING
         return {}
-    if len(form_db) > 0:
+    if len(form_db) > 2:
         form = {
             'langs': form_db['settings']['langs'],
             'fields': [],
@@ -91,7 +92,7 @@ def get_guest_login_form_to_admin():
     except:
         return {}
 
-    if len(form_db) > 0:
+    if len(form_db) > 2:
         form = {'settings': {
             'login': form_db['settings']['login'],
             'langs': form_db['settings']['langs'],

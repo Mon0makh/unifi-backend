@@ -7,10 +7,14 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
+import sys, os
+
 
 from models import LoginForm, LoginFormFields, GuestLogin, GuestFields, Token, User
 from data_verification import login_form_data_verification
 from connect_db import get_guest_login_form, get_lang_list_from_db, get_guest_login_form_to_admin
+
+
 
 from admin_auth import login_for_access_token, get_current_active_user
 
@@ -108,7 +112,7 @@ async def create_upload_file(
     if file is None:
         return {"message": "No upload file sent"}
     else:
-        with open('/var/www/html/img/imageBG.png', 'wb') as image:
+        with open(os.path.abspath('/var/www/html/img/imageBG.png'), 'wb') as image:
             image.write(file)
             image.close()
         return Response(content="imageBG", status_code=200)
@@ -123,7 +127,7 @@ async def create_file(
         return {"message": "No upload file sent"}
     else:
 
-        with open('/var/www/html/img/imageLogo.png', 'wb') as image:
+        with open(os.path.abspath('/var/www/html/img/imageLogo.png'), 'wb') as image:
             image.write(file)
             image.close()
         return Response(content="imageLogo", status_code=200)
@@ -138,7 +142,7 @@ async def create_file(
     if file is None:
         return {"message": "No upload file sent"}
     else:
-        with open('/var/www/html/img/imageBrand'+str(number)+'.png', 'wb') as image:
+        with open(os.path.abspath('/var/www/html/img/imageBrand'+str(number)+'.png'), 'wb') as image:
             image.write(file)
             image.close()
         return Response(content='imageBrand'+str(number)+'.png', status_code=200)
