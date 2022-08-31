@@ -10,12 +10,16 @@ mondb = MongoClient(MONGODB_LINK)[MONGO_DB]
 
 def get_lang_list_from_db():
     try:
-        langs_db = mondb.langs_list.find({})
+        langs_db = mondb.lang_list.find({})
     except:
         # TODO LOGING
         return []
-
-    langs = {lang['lang'] for lang in langs_db}
+    langs = []
+    for i in range(4, -1, -1):
+        for lang in langs_db:
+            if lang['number'] == i:
+                langs.append(lang['lang'])
+    # langs = {lang['lang'] for lang in langs_db}
     return langs
 
 
@@ -25,24 +29,25 @@ def get_guest_login_form(lang: str):
     except:
         # TODO LOGING
         return {}
-
-    form = {
-        'langs': form_db['settings']['langs'],
-        'fields': [],
-        'count_langs': form_db['settings']['count_langs'],
-        'count_fields': form_db['settings']['count_fields']
-    }
-
-    for field in form_db['fields']:
-        field_g = {
-            'type': field['type'],
-            'title': field['title'][lang],
-            'description': field.get('description').get(lang),
-            'brands': field.get('brands')
+    if len(form_db) > 0:
+        form = {
+            'langs': form_db['settings']['langs'],
+            'fields': [],
+            'count_langs': form_db['settings']['count_langs'],
+            'count_fields': form_db['settings']['count_fields']
         }
-        form['fields'].append(field_g)
-    return form
 
+        for field in form_db['fields']:
+            field_g = {
+                'type': field['type'],
+                'title': field['title'][lang],
+                'description': field.get('description').get(lang),
+                'brands': field.get('brands')
+            }
+            form['fields'].append(field_g)
+        return form
+    else:
+        return None
 
 def get_admin_login(login: str):
     try:
@@ -57,12 +62,13 @@ def get_admin_login(login: str):
             "full_name": user_db['full_name'],
             "email": user_db['email'],
             "hashed_password": user_db['hashed_password'],
-            "disable": user_db['disable']
+            "disabled": user_db['disable']
         }
         return user
 
     else:
         return None
+
 
 def get_url():
     try:
@@ -71,6 +77,7 @@ def get_url():
     except:
         # TODO
         return ""
+
 
 def save_admin_user():
     pass  # TODO
@@ -84,27 +91,30 @@ def get_guest_login_form_to_admin():
     except:
         return {}
 
-    form = {'settings': {
-        'login': form_db['settings']['login'],
-        'langs': form_db['settings']['langs'],
-        'count_langs': form_db['settings']['count_langs'],
-        'count_fields': form_db['settings']['count_fields'],
-        'api_url': form_db['settings']['api_url']
-    },
-        'fields': []
-    }
+    if len(form_db) > 0:
+        form = {'settings': {
+            'login': form_db['settings']['login'],
+            'langs': form_db['settings']['langs'],
+            'count_langs': form_db['settings']['count_langs'],
+            'count_fields': form_db['settings']['count_fields'],
+            'api_url': form_db['settings']['api_url']
+        },
+            'fields': []
+        }
 
-    for field in form_db['fields']:
-        field_g = {'type': field['type'], 'brand_icon': field['brand_icon'], 'title': {}, 'description': {}}
+        for field in form_db['fields']:
+            field_g = {'type': field['type'], 'brand_icon': field['brand_icon'], 'title': {}, 'description': {}}
 
-        for lang in form_db['settings']['langs']:
-            field_g['title'][lang] = field['title'][lang]
-            if len(field.get('description')) > 0:
-                field_g['description'][lang] = field['description'][lang]
+            for lang in form_db['settings']['langs']:
+                field_g['title'][lang] = field['title'][lang]
+                if len(field.get('description')) > 0:
+                    field_g['description'][lang] = field['description'][lang]
 
-        form['fields'].append(field_g)
+            form['fields'].append(field_g)
 
-    return form
+        return form
+    else:
+        return None
 
 
 def save_guest_login_form(fields: LoginForm):
