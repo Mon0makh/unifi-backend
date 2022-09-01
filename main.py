@@ -95,14 +95,14 @@ def get_lang_list():
 
 @app.get("/GetLoginForm/{lang}")
 async def get_login_form_fields(lang: str):
-    code, response_text = get_guest_login_form(lang)
-    return Response(content=response_text, status_code=code)
+    form = get_guest_login_form(lang)
+    return form
 
 
 @app.post("/GuestAuth/")
 async def guest_auth(form: GuestLogin):
-    request = send_guest_data(form)
-    return request
+    code, response_text = send_guest_data(form)
+    return Response(content=response_text, status_code=code)
 
 
 @app.post("/UploadBGImage/")

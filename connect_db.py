@@ -29,7 +29,7 @@ def get_guest_login_form(lang: str):
         form_db = mondb.login_form.find_one({'_key': 0})
     except:
         # TODO LOGING
-        return {}
+        return None
     if len(form_db) > 2:
         form = {
             'langs': form_db['settings']['langs'],
