@@ -1,8 +1,8 @@
 from pymongo import MongoClient
+from datetime import datetime
 
 from config import MONGODB_LINK, MONGO_DB
-
-from models import LoginForm
+from models import LoginForm, GuestLogin
 
 # Connect to DataBase
 mondb = MongoClient(MONGODB_LINK)[MONGO_DB]
@@ -49,6 +49,7 @@ def get_guest_login_form(lang: str):
         return form
     else:
         return None
+
 
 def get_admin_login(login: str):
     try:
@@ -149,3 +150,31 @@ def save_guest_login_form(fields: LoginForm):
         return True
 
     return False
+
+
+def save_guest_data(data: GuestLogin):
+    try:
+        form = {'lang': data.lang,
+                'fields': []
+                }
+
+        for field in data.fields:
+            if field.type == "front":
+                continue
+            field_g = {'time': datetime.now().strftime("%Y.%m.%d %H:%M:%S"), 'type': field.type,
+                       'title': field.title, 'api_name': field.api_name, 'value': field.value}
+
+            form['fields'].append(field_g)
+
+        mondb.guests_data.insert_one(form)
+        return False
+
+    except:
+        return True
+
+# class GuestFields(BaseModel):
+#     type: str
+#     title: str
+#     api_name: str
+#     description: Union[str, None]
+#     brand_icon: Union[str, None]

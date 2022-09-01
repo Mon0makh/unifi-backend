@@ -13,7 +13,7 @@ import sys, os
 from models import LoginForm, LoginFormFields, GuestLogin, GuestFields, Token, User
 from data_verification import login_form_data_verification
 from connect_db import get_guest_login_form, get_lang_list_from_db, get_guest_login_form_to_admin
-
+from send_data import send_guest_data
 
 
 from admin_auth import login_for_access_token, get_current_active_user
@@ -101,7 +101,8 @@ async def get_login_form_fields(lang: str):
 
 @app.post("/GuestAuth/")
 async def guest_auth(form: GuestLogin):
-    return {"OK"}
+    request = send_guest_data(form)
+    return request
 
 
 @app.post("/UploadBGImage/")
