@@ -95,8 +95,8 @@ def get_lang_list():
 
 @app.get("/GetLoginForm/{lang}")
 async def get_login_form_fields(lang: str):
-    form = get_guest_login_form(lang)
-    return form
+    code, response_text = get_guest_login_form(lang)
+    return Response(content=response_text, status_code=code)
 
 
 @app.post("/GuestAuth/")

@@ -42,6 +42,7 @@ def get_guest_login_form(lang: str):
             field_g = {
                 'type': field['type'],
                 'title': field['title'][lang],
+                'api_name': field['api_name'],
                 'description': field.get('description').get(lang),
                 'brand_icon': field.get('brand_icon')
             }
@@ -132,7 +133,7 @@ def save_guest_login_form(fields: LoginForm):
         }
 
         for field in fields.fields:
-            field_g = {'type': field.field_type, 'brand_icon': field.brand_icon, 'title': {}, 'description': {}}
+            field_g = {'type': field.field_type, 'brand_icon': field.brand_icon, 'api_name': field.api_name, 'title': {}, 'description': {}}
 
             for lang_index in range(fields.settings.count_langs):
                 field_g['title'][field.field_title[lang_index].lang] = field.field_title[lang_index].text
