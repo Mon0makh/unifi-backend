@@ -23,6 +23,8 @@ def send_guest_data(data: GuestLogin):
     if brands != "":
         query_params[brands_api] = brands
 
+    query_params['FIELDS[SOURCE_ID]'] = 'UC_QJSB1V'
+
     try:
         response = requests.get(url, params=query_params)
         return 200, "SUCCESS!"

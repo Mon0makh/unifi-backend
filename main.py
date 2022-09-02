@@ -1,26 +1,27 @@
-from fastapi import FastAPI, HTTPException, File, UploadFile, Depends, status, Header, Form
+from fastapi import FastAPI, File, Depends, Form
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import PlainTextResponse
 from fastapi.requests import Request
+from fastapi.responses import PlainTextResponse
 from fastapi.responses import Response
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordRequestForm
 from starlette.exceptions import HTTPException as StarletteHTTPException
-from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
-import sys, os
-
-
-from models import LoginForm, LoginFormFields, GuestLogin, GuestFields, Token, User
-from data_verification import login_form_data_verification
-from connect_db import get_guest_login_form, get_lang_list_from_db, get_guest_login_form_to_admin
-from send_data import send_guest_data
+import sys, logging
+from logging import StreamHandler, Formatter
 
 
 from admin_auth import login_for_access_token, get_current_active_user
-
-app = FastAPI()
+from connect_db import get_guest_login_form, get_lang_list_from_db, get_guest_login_form_to_admin
+from data_verification import login_form_data_verification
+from models import LoginForm, GuestLogin, Token, User
+from send_data import send_guest_data
 
 ALLOWED_ORIGINS = "*"
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+app = FastAPI()
+
 
 app.add_middleware(
     CORSMiddleware,

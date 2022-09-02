@@ -106,7 +106,7 @@ def get_guest_login_form_to_admin():
         }
 
         for field in form_db['fields']:
-            field_g = {'type': field['type'], 'brand_icon': field['brand_icon'], 'api_name': field['api_name'], 'title': {}, 'description': {}}
+            field_g = {'type': field['type'], 'brand_icon': field['brand_icon'], 'api_name': field['api_name'], 'title': {}, 'description': {}, 'api_value': field['api_value']}
 
             for lang in form_db['settings']['langs']:
                 field_g['title'][lang] = field['title'][lang]
@@ -133,7 +133,7 @@ def save_guest_login_form(fields: LoginForm):
         }
 
         for field in fields.fields:
-            field_g = {'type': field.field_type, 'brand_icon': field.brand_icon, 'api_name': field.api_name, 'title': {}, 'description': {}}
+            field_g = {'type': field.field_type, 'brand_icon': field.brand_icon, 'api_name': field.api_name, 'title': {}, 'description': {}, 'api_value': field.api_value}
 
             for lang_index in range(fields.settings.count_langs):
                 field_g['title'][field.field_title[lang_index].lang] = field.field_title[lang_index].text
@@ -173,9 +173,3 @@ def save_guest_data(data: GuestLogin):
     except:
         return True
 
-# class GuestFields(BaseModel):
-#     type: str
-#     title: str
-#     api_name: str
-#     description: Union[str, None]
-#     brand_icon: Union[str, None]

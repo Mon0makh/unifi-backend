@@ -40,6 +40,7 @@ class GuestFields(BaseModel):
     title: str
     api_name: str
     value: str
+    api_value: Union[str, None]
 
 class GuestLogin(BaseModel):
     lang: str
@@ -52,7 +53,7 @@ class LoginFormField(BaseModel):
     field_title: List[TextLangs]
     description: Union[List[TextLangs], None]
     brand_icon: Union[str, None]
-
+    api_value: Union[str, None]
 
 class LoginFormFields(BaseModel):
     fields: List[LoginFormField]
