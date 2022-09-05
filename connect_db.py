@@ -176,9 +176,9 @@ def save_guest_data(data: GuestLogin):
         return True
 
 
-def save_new_admin_password(user_id: str, old_password: str, new_pass: str):
+def save_new_admin_password(username: str, old_password: str, new_pass: str):
     try:
-        mondb.admins.update_one({'_id': user_id}, {'$set': {'hashed_password': new_pass}})
+        mondb.admins.update_one({'username': username}, {'$set': {'hashed_password': new_pass}})
         return False
     except:
         return "Error connect to db!"

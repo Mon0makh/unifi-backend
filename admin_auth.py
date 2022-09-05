@@ -106,7 +106,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 def edit_admin_pass(username: str, old_password: str, new_password: str):
     user = authenticate_user(username, old_password)
     if user is not False:
-        resp = save_new_admin_password(user['_id'], get_password_hash(new_password))
+        resp = save_new_admin_password(username, get_password_hash(new_password))
         return resp
     else:
         return "User doesnt exist or password incorrect!!!"
