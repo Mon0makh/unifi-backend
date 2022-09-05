@@ -9,9 +9,8 @@ from starlette.middleware.cors import CORSMiddleware
 import sys, logging
 from logging import StreamHandler, Formatter
 
-from admin_auth import login_for_access_token, get_current_active_user
-from connect_db import get_guest_login_form, get_lang_list_from_db, get_guest_login_form_to_admin, \
-    save_new_admin_password
+from admin_auth import login_for_access_token, get_current_active_user, edit_admin_pass
+from connect_db import get_guest_login_form, get_lang_list_from_db, get_guest_login_form_to_admin
 from data_verification import login_form_data_verification
 from models import LoginForm, GuestLogin, Token, User
 from send_data import send_guest_data
@@ -159,7 +158,7 @@ async def set_new_password(
         old_password: str = Form(),
         new_password: str = Form(),
         current_user: User = Depends(get_current_active_user)):
-    resp = save_new_admin_password(username, old_password, new_password)
+    resp = edit_admin_pass(username, old_password, new_password)
     if resp:
         return Response(content='ERROR! ' + resp, status_code=200)
     else:

@@ -6,7 +6,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from models import User, UserInDB, TokenData
-from connect_db import get_admin_login
+from connect_db import get_admin_login, save_new_admin_password
 from config import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
 
 # fake_users_db = {
@@ -102,3 +102,11 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "Bearer"}
+
+def edit_admin_pass(username: str, old_password: str, new_password: str):
+    user = authenticate_user(username, old_password)
+    if user is not False:
+        resp = save_new_admin_password(user['_id'], get_password_hash(new_password))
+        return resp
+    else:
+        return "User doesnt exist or password incorrect!!!"
