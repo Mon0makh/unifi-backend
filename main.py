@@ -159,7 +159,8 @@ async def set_new_password(
         old_password: str = Form(),
         new_password: str = Form(),
         current_user: User = Depends(get_current_active_user)):
-    if save_new_admin_password(username, old_password, new_password):
-        return Response(content='ERROR!', status_code=200)
+    resp = save_new_admin_password(username, old_password, new_password)
+    if resp:
+        return Response(content='ERROR! ' + resp, status_code=200)
     else:
         return Response(content='Password Changed!', status_code=200)

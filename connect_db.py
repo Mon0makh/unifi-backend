@@ -3,7 +3,7 @@ from datetime import datetime
 
 from config import MONGODB_LINK, MONGO_DB
 from models import LoginForm, GuestLogin
-from admin_auth import authenticate_user, get_password_hash
+import admin_auth
 
 # Connect to DataBase
 mondb = MongoClient(MONGODB_LINK)[MONGO_DB]
@@ -183,6 +183,6 @@ def save_new_admin_password(username: str, old_password: str, new_pass: str):
         if user is not False:
             mondb.admins.update_one({'_id': user['_id']}, {'$set': {'hashed_password': get_password_hash(new_pass)}})
             return False
-        return True
+        return "User doesnt exist"
     except:
-        return True
+        return "Error connect to db!"
