@@ -9,9 +9,9 @@ from starlette.middleware.cors import CORSMiddleware
 import sys, logging
 from logging import StreamHandler, Formatter
 
-
 from admin_auth import login_for_access_token, get_current_active_user
-from connect_db import get_guest_login_form, get_lang_list_from_db, get_guest_login_form_to_admin
+from connect_db import get_guest_login_form, get_lang_list_from_db, get_guest_login_form_to_admin, \
+    save_new_admin_password
 from data_verification import login_form_data_verification
 from models import LoginForm, GuestLogin, Token, User
 from send_data import send_guest_data
@@ -21,7 +21,6 @@ ALLOWED_ORIGINS = "*"
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 app = FastAPI()
-
 
 app.add_middleware(
     CORSMiddleware,
@@ -111,7 +110,7 @@ async def create_upload_file(
         file: bytes = File(),
         img_type: str = Form(),
         current_user: User = Depends(get_current_active_user)
-    ):
+):
     if file is None:
         return {"message": "No upload file sent"}
     else:
@@ -126,12 +125,12 @@ async def create_file(
         file: bytes = File(),
         img_type: str = Form(),
         current_user: User = Depends(get_current_active_user)
-    ):
+):
     if file is None:
         return {"message": "No upload file sent"}
     else:
 
-        with open('/var/www/html/img/imageLogo.'+img_type, 'wb') as image:
+        with open('/var/www/html/img/imageLogo.' + img_type, 'wb') as image:
             image.write(file)
             image.close()
         return Response(content="imageLogo", status_code=200)
@@ -143,12 +142,24 @@ async def create_file(
         img_type: str = Form(),
         number: int = Form(),
         current_user: User = Depends(get_current_active_user)
-    ):
+):
     if file is None:
         return {"message": "No upload file sent"}
     else:
-        with open('/var/www/html/img/imageBrand'+str(number)+'.' + img_type, 'wb') as image:
+        with open('/var/www/html/img/imageBrand' + str(number) + '.' + img_type, 'wb') as image:
             image.write(file)
             image.close()
 
-        return Response(content='imageBrand'+str(number)+'.' + img_type, status_code=200)
+        return Response(content='imageBrand' + str(number) + '.' + img_type, status_code=200)
+
+
+@app.post('/SetNewPassword/')
+async def set_new_password(
+        username: str = Form(),
+        old_password: str = Form(),
+        new_password: str = Form(),
+        current_user: User = Depends(get_current_active_user)):
+    if save_new_admin_password(username, old_password, new_password):
+        return Response(content='ERROR!', status_code=200)
+    else:
+        return Response(content='Password Changed!', status_code=200)

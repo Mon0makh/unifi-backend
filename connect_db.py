@@ -3,6 +3,7 @@ from datetime import datetime
 
 from config import MONGODB_LINK, MONGO_DB
 from models import LoginForm, GuestLogin
+from admin_auth import authenticate_user, get_password_hash
 
 # Connect to DataBase
 mondb = MongoClient(MONGODB_LINK)[MONGO_DB]
@@ -106,7 +107,8 @@ def get_guest_login_form_to_admin():
         }
 
         for field in form_db['fields']:
-            field_g = {'type': field['type'], 'brand_icon': field['brand_icon'], 'api_name': field['api_name'], 'title': {}, 'description': {}, 'api_value': field['api_value']}
+            field_g = {'type': field['type'], 'brand_icon': field['brand_icon'], 'api_name': field['api_name'],
+                       'title': {}, 'description': {}, 'api_value': field['api_value']}
 
             for lang in form_db['settings']['langs']:
                 field_g['title'][lang] = field['title'][lang]
@@ -133,7 +135,8 @@ def save_guest_login_form(fields: LoginForm):
         }
 
         for field in fields.fields:
-            field_g = {'type': field.field_type, 'brand_icon': field.brand_icon, 'api_name': field.api_name, 'title': {}, 'description': {}, 'api_value': field.api_value}
+            field_g = {'type': field.field_type, 'brand_icon': field.brand_icon, 'api_name': field.api_name,
+                       'title': {}, 'description': {}, 'api_value': field.api_value}
 
             for lang_index in range(fields.settings.count_langs):
                 field_g['title'][field.field_title[lang_index].lang] = field.field_title[lang_index].text
@@ -173,3 +176,13 @@ def save_guest_data(data: GuestLogin):
     except:
         return True
 
+
+def save_new_admin_password(username: str, old_password: str, new_pass: str):
+    try:
+        user = authenticate_user(username, old_password)
+        if user is not False:
+            mondb.admins.update_one({'_id': user['_id']}, {'$set': {'hashed_password': get_password_hash(new_pass)}})
+            return False
+        return True
+    except:
+        return True
