@@ -176,7 +176,7 @@ def save_guest_data(data: GuestLogin):
         return True
 
 
-def save_new_admin_password(username: str, old_password: str, new_pass: str):
+def save_new_admin_password(username: str, new_pass: str):
     try:
         mondb.admins.update_one({'username': username}, {'$set': {'hashed_password': new_pass}})
         return False

@@ -6,6 +6,7 @@ from fastapi.responses import Response
 from fastapi.security import OAuth2PasswordRequestForm
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.cors import CORSMiddleware
+import uvicorn
 import sys, logging
 from logging import StreamHandler, Formatter
 
@@ -163,3 +164,8 @@ async def set_new_password(
         return Response(content='ERROR! ' + resp, status_code=200)
     else:
         return Response(content='Password Changed!', status_code=200)
+
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="185.125.88.30", port=8000, reload=False, log_level="debug", debug=True,
+                workers=1, limit_concurrency=1, limit_max_requests=1)
