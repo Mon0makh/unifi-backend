@@ -12,16 +12,13 @@ def send_guest_data(data: GuestLogin):
     if db_save:
         return 500, "Error! Cannot load data to server! DataBase may be offline!"
 
-    brands = ""
-    brands_api = ""
+    brands_index = 0
     for field in data.fields:
         if field.type == 'brand':
-            brands += " " + field.value
-            brands_api = field.api_name
+            query_params['FIELDS[UF_CRM_1537246407]['+str(brands_index)+']'] = field.api_value
+            brands_index += 1
         query_params[field.api_name] = field.value
 
-    if brands != "":
-        query_params[brands_api] = brands
 
     query_params['FIELDS[SOURCE_ID]'] = 'UC_QJSB1V'
 
