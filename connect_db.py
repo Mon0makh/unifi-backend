@@ -107,7 +107,7 @@ def get_guest_login_form_to_admin():
 
         for field in form_db['fields']:
             field_g = {'type': field['type'], 'brand_icon': field['brand_icon'], 'api_name': field['api_name'],
-                       'title': {}, 'description': {}, 'api_value': field['api_value']}
+                       'title': {}, 'description': {}, 'api_value': None if field.get('api_value') is None else field.get('api_value')}
 
             for lang in form_db['settings']['langs']:
                 field_g['title'][lang] = field['title'][lang]
