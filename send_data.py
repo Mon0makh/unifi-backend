@@ -14,8 +14,8 @@ def send_guest_data(data: GuestLogin):
 
     brands_index = 0
     for field in data.fields:
-        if field.type == 'brand':
-            query_params['FIELDS[UF_CRM_1537246407]['+str(brands_index)+']'] = field.api_value
+        if field.type == 'brand' and field.value is not None:
+            query_params['FIELDS[UF_CRM_1537246407]['+str(brands_index)+']'] = field.value
             brands_index += 1
         query_params[field.api_name] = field.value
 

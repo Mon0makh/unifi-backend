@@ -39,8 +39,7 @@ class GuestFields(BaseModel):
     type: str
     title: str
     api_name: str
-    value: str
-    api_value: Union[str, None]
+    value: Union[str, None]
 
 class GuestLogin(BaseModel):
     lang: str
