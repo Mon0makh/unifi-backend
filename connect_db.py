@@ -40,16 +40,16 @@ def get_guest_login_form(lang: str):
         }
 
         ## ВРЕМЕННОЕ ПЕРЕДЕЛАТЬ
-        for lang in form['langs']:
-            if lang == 'rus':
+        for _lang in form['langs']:
+            if _lang == 'rus':
                 form['langs_flags'].append('🇷🇺')
-            elif lang == 'eng':
+            elif _lang == 'eng':
                 form['langs_flags'].append('🇺🇸')
-            elif lang == 'kaz':
+            elif _lang == 'kaz':
                 form['langs_flags'].append('🇰🇿')
-            elif lang == 'tur':
+            elif _lang == 'tur':
                 form['langs_flags'].append('🇹🇷')
-            elif lang == 'ita':
+            elif _lang == 'ita':
                 form['langs_flags'].append('🇮🇹')
 
         ## ВРЕМЕННОЕ ПЕРЕДЕЛАТЬ

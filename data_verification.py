@@ -11,8 +11,11 @@ def login_form_data_verification(item: LoginForm):
 
     for field_numb in range(len(item.fields)):
         if len(item.fields[field_numb].field_title) != item.settings.count_langs:
-
             return 400, "Error! Empty field title: " + str(field_numb)
+
+        if item.fields[field_numb].field_type == 'brand':
+            if item.fields[field_numb].brand_icon is None:
+                return 400, "Error! Empty brand icon!"
         if item.fields[field_numb].description is not None:
             if len(item.fields[field_numb].description) != len(item.settings.langs):
                 return 400, "Error! Empty description: " + str(field_numb)
