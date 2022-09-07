@@ -28,8 +28,8 @@ class LoginFormSettings(BaseModel):
     count_langs: int
     count_fields: int
     api_url: str
-    bg_image: str
-    logo_image: str
+    bg_image: Union[str, None]
+    logo_image: Union[str, None]
 
 
 class TextLangs(BaseModel):

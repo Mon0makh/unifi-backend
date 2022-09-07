@@ -159,12 +159,15 @@ def save_guest_login_form(fields: LoginForm):
             'langs': fields.settings.langs,
             'count_langs': fields.settings.count_langs,
             'count_fields': fields.settings.count_fields,
-            'api_url': fields.settings.api_url,
-            'bg_image': fields.settings.bg_image,
-            'logo_image': fields.settings.logo_image
+            'api_url': fields.settings.api_url
         },
             'fields': []
         }
+
+        if fields.settings.bg_image is not None:
+            form['settings']['bg_image'] = fields.settings.bg_image
+        if fields.settings.logo_image is not None:
+            form['settings']['logo_image'] = fields.settings.logo_image
 
         for field in fields.fields:
             field_g = {'type': field.field_type, 'brand_icon': field.brand_icon, 'api_name': field.api_name,
