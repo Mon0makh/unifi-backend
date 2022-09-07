@@ -33,10 +33,24 @@ def get_guest_login_form(lang: str):
     if len(form_db) > 2:
         form = {
             'langs': form_db['settings']['langs'],
+            'langs_flags': [],
             'fields': [],
             'count_langs': form_db['settings']['count_langs'],
             'count_fields': form_db['settings']['count_fields']
         }
+
+        ## ВРЕМЕННОЕ ПЕРЕДЕЛАТЬ
+        for lang in form['langs']:
+            if lang == 'rus':
+                form['langs_flags'].append('🇷🇺')
+            elif lang == 'eng':
+                form['langs_flags'].append('🇺🇸')
+            elif lang == 'kaz':
+                form['langs_flags'].append('🇰🇿')
+            elif lang == 'tur':
+                form['langs_flags'].append('🇹🇷')
+            elif lang == 'ita':
+                form['langs_flags'].append('🇮🇹')
 
         ## ВРЕМЕННОЕ ПЕРЕДЕЛАТЬ
         if lang == 'rus':
