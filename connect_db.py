@@ -38,6 +38,18 @@ def get_guest_login_form(lang: str):
             'count_fields': form_db['settings']['count_fields']
         }
 
+        ## ВРЕМЕННОЕ ПЕРЕДЕЛАТЬ
+        if lang == 'rus':
+            form['submit_lang'] = 'Отправить'
+        elif lang == 'eng':
+            form['submit_lang'] = 'Send'
+        elif lang == 'kaz':
+            form['submit_lang'] = 'Жіберу'
+        elif lang == 'tur':
+            form['submit_lang'] = 'Göndermek'
+        elif lang == 'ita':
+            form['submit_lang'] = 'Inviare'
+
         for field in form_db['fields']:
             field_g = {
                 'type': field['type'],

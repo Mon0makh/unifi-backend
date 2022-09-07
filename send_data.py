@@ -15,13 +15,12 @@ def send_guest_data(data: GuestLogin):
     brands_index = 0
     for field in data.fields:
         if field.type == 'brand' and field.value is not None:
-            query_params['FIELDS[UF_CRM_1537246407]['+str(brands_index)+']'] = field.value
+            query_params['FIELDS[UF_CRM_1537246407][' + str(brands_index) + ']'] = field.value
             brands_index += 1
         elif field.type == 'button':
             continue
         else:
             query_params[field.api_name] = field.value
-
 
     query_params['FIELDS[SOURCE_ID]'] = 'UC_QJSB1V'
 
@@ -30,5 +29,3 @@ def send_guest_data(data: GuestLogin):
         return 200, "SUCCESS!"
     except:
         return 500, "Error! Cannot load data to API Server!"
-
-
