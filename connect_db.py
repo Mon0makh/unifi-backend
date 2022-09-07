@@ -36,7 +36,9 @@ def get_guest_login_form(lang: str):
             'langs_flags': [],
             'fields': [],
             'count_langs': form_db['settings']['count_langs'],
-            'count_fields': form_db['settings']['count_fields']
+            'count_fields': form_db['settings']['count_fields'],
+            'bg_image': form_db['settings']['bg_image'],
+            'logo_image': form_db['settings']['logo_image']
         }
 
         ## ВРЕМЕННОЕ ПЕРЕДЕЛАТЬ
@@ -127,7 +129,9 @@ def get_guest_login_form_to_admin():
             'langs': form_db['settings']['langs'],
             'count_langs': form_db['settings']['count_langs'],
             'count_fields': form_db['settings']['count_fields'],
-            'api_url': form_db['settings']['api_url']
+            'api_url': form_db['settings']['api_url'],
+            'bg_image': form_db['settings']['bg_image'],
+            'logo_image': form_db['settings']['logo_image']
         },
             'fields': []
         }
@@ -155,7 +159,9 @@ def save_guest_login_form(fields: LoginForm):
             'langs': fields.settings.langs,
             'count_langs': fields.settings.count_langs,
             'count_fields': fields.settings.count_fields,
-            'api_url': fields.settings.api_url
+            'api_url': fields.settings.api_url,
+            'bg_image': fields.settings.bg_image,
+            'logo_image': fields.settings.logo_image
         },
             'fields': []
         }
