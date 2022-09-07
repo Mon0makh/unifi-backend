@@ -117,7 +117,7 @@ async def create_upload_file(
         with open('/var/www/html/img/imageBG.' + img_type, 'wb') as image:
             image.write(file)
             image.close()
-        return Response(content="imageBG", status_code=200)
+        return Response(content='imageBG'+'.'+img_type, status_code=200)
 
 
 @app.post("/UploadLogoImage/")
@@ -133,7 +133,7 @@ async def create_file(
         with open('/var/www/html/img/imageLogo.' + img_type, 'wb') as image:
             image.write(file)
             image.close()
-        return Response(content="imageLogo", status_code=200)
+        return Response(content='imageLogo'+'.'+img_type, status_code=200)
 
 
 @app.post("/UploadBrandImage/")
