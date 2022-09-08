@@ -6,6 +6,7 @@ from typing import List, Union
 class Token(BaseModel):
     access_token: str
     token_type: str
+    expires: str
 
 
 class TokenData(BaseModel):
