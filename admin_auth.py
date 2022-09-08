@@ -101,7 +101,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     access_token = create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
-    return {"access_token": access_token, "token_type": "Bearer", "expires": str(access_token_expires)}
+    return {"access_token": access_token, "token_type": "Bearer", "expires": str(access_token_expires.max)}
 
 def edit_admin_pass(username: str, old_password: str, new_password: str):
     user = authenticate_user(username, old_password)
