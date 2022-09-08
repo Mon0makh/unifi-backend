@@ -41,6 +41,7 @@ class GuestFields(BaseModel):
     type: str
     title: str
     api_name: str
+    required_field: Union[bool, None]
     value: Union[str, None]
 
 class GuestLogin(BaseModel):
@@ -51,6 +52,7 @@ class GuestLogin(BaseModel):
 class LoginFormField(BaseModel):
     field_type: str
     api_name: Union[str, None]
+    required_field: Union[bool, None]
     field_title: List[TextLangs]
     description: Union[List[TextLangs], None]
     brand_icon: Union[str, None]
