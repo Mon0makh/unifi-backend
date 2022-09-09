@@ -6,8 +6,7 @@ from models import GuestLogin
 
 def send_guest_data(data: GuestLogin):
     url = get_url()
-    query_params = {'FIELDS[TITLE]': '. WiFi'}
-
+    query_params = {'FIELDS[TITLE]': 'Гость. WiFi', 'FIELDS[SOURCE_ID]': 'UC_QJSB1V'}
     db_save = save_guest_data(data)
     if db_save:
         return 500, "Error! Cannot load data to server! DataBase may be offline!"
@@ -31,8 +30,9 @@ def send_guest_data(data: GuestLogin):
         else:
             query_params[field.api_name] = field.value
 
-    query_params['FIELDS[SOURCE_ID]'] = 'UC_QJSB1V'
-    query_params['FIELDS[TITLE]'] = client_name + (query_params['FIELDS[TITLE]']) if len(client_name) > 2 else "Гость" + (query_params['FIELDS[TITLE]'])
+
+    if client_name:
+        query_params['FIELDS[TITLE]'] = client_name + ". WiFi"
     try:
         response = requests.get(url, params=query_params)
         return 200, "SUCCESS!"
