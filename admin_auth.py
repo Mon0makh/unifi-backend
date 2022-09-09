@@ -98,13 +98,14 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    expiration_time = (datetime.now() + timedelta(5, 0, 0)).strftime("%Y-%m-%d %H:%M:%S")
-    print(expiration_time)
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    expiration_time = (datetime.now() + access_token_expires).strftime("%Y-%m-%d %H:%M:%S")
+
     access_token = create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "Bearer", "expires": expiration_time}
+
 
 def edit_admin_pass(username: str, old_password: str, new_password: str):
     user = authenticate_user(username, old_password)

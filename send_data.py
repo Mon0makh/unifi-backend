@@ -25,9 +25,9 @@ def send_guest_data(data: GuestLogin):
                 client_name = client_name + field.value
             if field.api_name == 'FIELD[LAST_NAME]':
                 client_name = client_name + field.value
+                
+            query_params[field.api_name] = field.value
 
-        elif field.type == 'button':
-            continue
         else:
             query_params[field.api_name] = field.value
 
