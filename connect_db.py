@@ -19,7 +19,7 @@ def get_lang_list_from_db():
     #     for lang in langs_db:
     #         if lang['number'] == i:
     #             langs.append(lang['lang'])
-    langs = ['rus', 'eng', 'kaz', 'tur', 'ita']
+    langs = ['ru_RU', 'en_EN', 'kz_KZ', 'tur', 'ita']
     # langs = {lang['lang'] for lang in langs_db}
     return langs
 
