@@ -57,7 +57,7 @@ def get_guest_login_form(lang: str):
         ## ВРЕМЕННОЕ ПЕРЕДЕЛАТЬ
         if lang == 'ru_RU':
             form['submit_lang'] = 'Отправить'
-        elif lang == 'en_En':
+        elif lang == 'en_EN':
             form['submit_lang'] = 'Send'
         elif lang == 'kk_KZ':
             form['submit_lang'] = 'Жіберу'
