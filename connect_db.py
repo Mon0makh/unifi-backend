@@ -22,14 +22,14 @@ def get_guest_login_form(lang: str):
     if len(form_db) > 2:
         if lang.startswith("tr_"):
             lang = "tr_TR"
-        elif lang.startswith("en_"):
-            lang = "en_EN"
+        elif lang.startswith("ru_"):
+            lang = "ru_RU"
         elif lang.startswith("it_"):
             lang = "it_IT"
         elif lang.startswith("kk_"):
             lang = "kk_KZ"
         else:
-            lang = "ru_RU"
+            lang = "en_EN"
 
         form = {
             'langs': form_db['settings']['langs'],
