@@ -20,8 +20,16 @@ def get_guest_login_form(lang: str):
         # TODO LOGING
         return None
     if len(form_db) > 2:
-        if lang == "en_US":
+        if lang.startswith("tr_"):
+            lang = "tr_TR"
+        elif lang.startswith("en_"):
             lang = "en_EN"
+        elif lang.startswith("it_"):
+            lang = "it_IT"
+        elif lang.startswith("kk_"):
+            lang = "kk_KZ"
+        else:
+            lang = "ru_RU"
 
         form = {
             'langs': form_db['settings']['langs'],
