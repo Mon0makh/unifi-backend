@@ -27,6 +27,10 @@ def send_guest_data(data: GuestLogin):
                 
             query_params[field.api_name] = field.value
 
+        if field.type == "checkbox":
+            if field.value is not None:
+                query_params['FIELDS[SOURCE_DESCRIPTION]'] = field.value
+
         else:
             query_params[field.api_name] = field.value
 
