@@ -9,18 +9,7 @@ mondb = MongoClient(MONGODB_LINK)[MONGO_DB]
 
 
 def get_lang_list_from_db():
-    # try:
-    #     langs_db = mondb.lang_list.find({})
-    # except:
-    #     # TODO LOGING
-    #     return []
-    # langs = []
-    # for i in range(4, -1, -1):
-    #     for lang in langs_db:
-    #         if lang['number'] == i:
-    #             langs.append(lang['lang'])
-    langs = ['rus', 'eng', 'kaz', 'tur', 'ita']
-    # langs = {lang['lang'] for lang in langs_db}
+    langs = ['ru_RU', 'en_EN', 'kk_KZ', 'tr_TR', 'it_IT']
     return langs
 
 
@@ -43,27 +32,27 @@ def get_guest_login_form(lang: str):
 
         ## ВРЕМЕННОЕ ПЕРЕДЕЛАТЬ
         for _lang in form['langs']:
-            if _lang == 'rus':
+            if _lang == 'ru_RU':
                 form['langs_flags'].append('🇷🇺')
-            elif _lang == 'eng':
+            elif _lang == 'en_EN':
                 form['langs_flags'].append('🇺🇸')
-            elif _lang == 'kaz':
+            elif _lang == 'kk_KZ':
                 form['langs_flags'].append('🇰🇿')
-            elif _lang == 'tur':
+            elif _lang == 'tr_TR':
                 form['langs_flags'].append('🇹🇷')
-            elif _lang == 'ita':
+            elif _lang == 'it_IT':
                 form['langs_flags'].append('🇮🇹')
 
         ## ВРЕМЕННОЕ ПЕРЕДЕЛАТЬ
-        if lang == 'rus':
+        if lang == 'ru_RU':
             form['submit_lang'] = 'Отправить'
-        elif lang == 'eng':
+        elif lang == 'en_En':
             form['submit_lang'] = 'Send'
-        elif lang == 'kaz':
+        elif lang == 'kk_KZ':
             form['submit_lang'] = 'Жіберу'
-        elif lang == 'tur':
+        elif lang == 'tr_TR':
             form['submit_lang'] = 'Göndermek'
-        elif lang == 'ita':
+        elif lang == 'it_IT':
             form['submit_lang'] = 'Inviare'
 
         for field in form_db['fields']:

@@ -167,5 +167,4 @@ async def set_new_password(
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="185.125.88.30", port=8000, reload=False, log_level="debug", debug=True,
-                workers=1, limit_concurrency=1, limit_max_requests=1)
+    uvicorn.run("main:app", host="185.125.88.30", port=8000, reload=False, log_level="debug", debug=True)

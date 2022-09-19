@@ -20,10 +20,10 @@ def send_guest_data(data: GuestLogin):
             brands_index += 1
 
         if field.type == 'textfield':
-            if field.api_name == 'FIELD[NAME]':
-                client_name = client_name + field.value
-            if field.api_name == 'FIELD[LAST_NAME]':
-                client_name = client_name + field.value
+            if field.api_name == 'FIELDS[NAME]':
+                client_name = client_name + " " + field.value
+            if field.api_name == 'FIELDS[LAST_NAME]':
+                client_name = client_name + " " + field.value
                 
             query_params[field.api_name] = field.value
 

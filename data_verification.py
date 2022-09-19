@@ -1,4 +1,4 @@
-from models import LoginForm, LoginFormFields
+from models import LoginForm, GuestLogin
 from connect_db import save_guest_login_form
 
 
@@ -24,5 +24,5 @@ def login_form_data_verification(item: LoginForm):
         return 500, "Error! Cannot load data to server! DataBase may be offline!"
 
     return 200, "Data loaded successfully!"
-
-
+def guest_form_data_verification(item: GuestLogin):
+    pass
