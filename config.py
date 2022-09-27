@@ -1,3 +1,14 @@
+# langs setting
+ALL_LANGS = ['ru_RU', 'en_EN', 'kk_KZ', 'tr_TR', 'it_IT']
+
+SEND_TEXT = {'ru_RU': 'Подключиться',
+             'en_EN': 'Connect',
+             'kk_KZ': 'Қосылу',
+             'tr_TR': 'Bağlamak',
+             'it_IT': 'Collegare'}
+
+
+# DB Connect
 MONGODB_LINK = "mongodb://127.0.0.1:27017/?retryWrites=true&w=majority"
 MONGO_DB = "unifi"
 

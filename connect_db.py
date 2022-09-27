@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 from datetime import datetime
 
-from config import MONGODB_LINK, MONGO_DB
+from config import MONGODB_LINK, MONGO_DB, ALL_LANGS, SEND_TEXT
 from models import LoginForm, GuestLogin
 
 # Connect to DataBase
@@ -9,8 +9,7 @@ mondb = MongoClient(MONGODB_LINK)[MONGO_DB]
 
 
 def get_lang_list_from_db():
-    langs = ['ru_RU', 'en_EN', 'kk_KZ', 'tr_TR', 'it_IT']
-    return langs
+    return ALL_LANGS
 
 
 def get_guest_login_form(lang: str):
@@ -20,51 +19,27 @@ def get_guest_login_form(lang: str):
         # TODO LOGING
         return None
     if len(form_db) > 2:
-        if lang.startswith("tr_"):
-            lang = "tr_TR"
-        elif lang.startswith("ru_"):
-            lang = "ru_RU"
-        elif lang.startswith("it_"):
-            lang = "it_IT"
-        elif lang.startswith("kk_"):
-            lang = "kk_KZ"
-        else:
-            lang = "en_EN"
+        lang = [i for i in ALL_LANGS if i.startswith(lang[0:3])]
 
-        form = {
-            'langs': form_db['settings']['langs'],
-            'langs_flags': [],
-            'fields': [],
-            'count_langs': form_db['settings']['count_langs'],
-            'count_fields': form_db['settings']['count_fields'],
-            'bg_image': form_db['settings']['bg_image'],
-            'logo_image': form_db['settings']['logo_image']
-        }
+        form = {'langs': form_db['settings']['langs'], 'langs_flags': [], 'fields': [],
+                'count_langs': form_db['settings']['count_langs'], 'count_fields': form_db['settings']['count_fields'],
+                'bg_image': form_db['settings']['bg_image'], 'logo_image': form_db['settings']['logo_image'],
+                'submit_lang': SEND_TEXT[lang]}
 
         ## ВРЕМЕННОЕ ПЕРЕДЕЛАТЬ
-        for _lang in form['langs']:
-            if _lang == 'ru_RU':
-                form['langs_flags'].append('🇷🇺')
-            elif _lang == 'en_EN':
-                form['langs_flags'].append('🇺🇸')
-            elif _lang == 'kk_KZ':
-                form['langs_flags'].append('🇰🇿')
-            elif _lang == 'tr_TR':
-                form['langs_flags'].append('🇹🇷')
-            elif _lang == 'it_IT':
-                form['langs_flags'].append('🇮🇹')
+        # for _lang in form['langs']:
+        #     if _lang == 'ru_RU':
+        #         form['langs_flags'].append('🇷🇺')
+        #     elif _lang == 'en_EN':
+        #         form['langs_flags'].append('🇺🇸')
+        #     elif _lang == 'kk_KZ':
+        #         form['langs_flags'].append('🇰🇿')
+        #     elif _lang == 'tr_TR':
+        #         form['langs_flags'].append('🇹🇷')
+        #     elif _lang == 'it_IT':
+        #         form['langs_flags'].append('🇮🇹')
 
         ## ВРЕМЕННОЕ ПЕРЕДЕЛАТЬ
-        if lang == 'ru_RU':
-            form['submit_lang'] = 'Отправить'
-        elif lang == 'en_EN':
-            form['submit_lang'] = 'Send'
-        elif lang == 'kk_KZ':
-            form['submit_lang'] = 'Жіберу'
-        elif lang == 'tr_TR':
-            form['submit_lang'] = 'Göndermek'
-        elif lang == 'it_IT':
-            form['submit_lang'] = 'Inviare'
 
         for field in form_db['fields']:
             field_g = {
