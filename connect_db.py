@@ -49,7 +49,8 @@ def get_guest_login_form(lang: str):
                 'description': field.get('description').get(lang),
                 'brand_icon': field.get('brand_icon'),
                 'api_value': field.get('api_value'),
-                'required_field': field.get('required_field')
+                'required_field': field.get('required_field'),
+                'brand_url': field.get('brand_url'),
             }
             form['fields'].append(field_g)
         return form
@@ -116,7 +117,8 @@ def get_guest_login_form_to_admin():
             field_g = {'type': field['type'], 'brand_icon': field.get('brand_icon'), 'api_name': field['api_name'],
                        'title': {}, 'description': {},
                        'api_value': None if field.get('api_value') is None else field.get('api_value'),
-                       'required_field': field.get('required_field')}
+                       'required_field': field.get('required_field'),
+                       'brand_url': field.get('brand_url')}
 
             for lang in form_db['settings']['langs']:
                 field_g['title'][lang] = field['title'][lang]
@@ -150,7 +152,7 @@ def save_guest_login_form(fields: LoginForm):
         for field in fields.fields:
             field_g = {'type': field.field_type, 'brand_icon': field.brand_icon, 'api_name': field.api_name,
                        'title': {}, 'description': {}, 'api_value': field.api_value,
-                       'required_field': field.required_field}
+                       'required_field': field.required_field, 'brand_url': field.brandUrl}
 
             for lang_index in range(fields.settings.count_langs):
                 field_g['title'][field.field_title[lang_index].lang] = field.field_title[lang_index].text
