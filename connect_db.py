@@ -19,27 +19,17 @@ def get_guest_login_form(lang: str):
         # TODO LOGING
         return None
     if len(form_db) > 2:
-        lang = [i for i in ALL_LANGS if i.startswith(lang[0:3])][0]
-
-        form = {'langs': form_db['settings']['langs'], 'langs_flags': [], 'fields': [],
+        lang_l = [i for i in ALL_LANGS if i.startswith(lang[0:3])]
+        if len(lang_l) == 0:
+            lang = ALL_LANGS[1]
+        else: 
+            lang = lang_l[0]
+        
+        form = {'langs': form_db['settings']['langs'], 'fields': [],
                 'count_langs': form_db['settings']['count_langs'], 'count_fields': form_db['settings']['count_fields'],
                 'bg_image': form_db['settings']['bg_image'], 'logo_image': form_db['settings']['logo_image'],
                 'submit_lang': SEND_TEXT[lang]}
 
-        ## ВРЕМЕННОЕ ПЕРЕДЕЛАТЬ
-        for _lang in form['langs']:
-            if _lang == 'ru_RU':
-                form['langs_flags'].append('🇷🇺')
-            elif _lang == 'en_EN':
-                form['langs_flags'].append('🇺🇸')
-            elif _lang == 'kk_KZ':
-                form['langs_flags'].append('🇰🇿')
-            elif _lang == 'tr_TR':
-                form['langs_flags'].append('🇹🇷')
-            elif _lang == 'it_IT':
-                form['langs_flags'].append('🇮🇹')
-
-        ## ВРЕМЕННОЕ ПЕРЕДЕЛАТЬ
 
         for field in form_db['fields']:
             field_g = {
